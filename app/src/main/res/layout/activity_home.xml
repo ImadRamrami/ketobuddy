@@ -16,6 +16,80 @@
         android:textSize="18sp"
         android:layout_marginBottom="24dp" />
 
+    <!-- 🗓️ Date Navigation Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="12dp">
+
+        <Button
+            android:id="@+id/prevDayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="←"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Today"
+            android:textSize="16sp"
+            android:layout_marginHorizontal="16dp" />
+
+        <Button
+            android:id="@+id/nextDayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="→"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/nutrientTotalsSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:id="@+id/totalCalories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calories: 0 kcal"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/totalProtein"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Protein: 0 g"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/totalFat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fat: 0 g"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/totalCarbs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Carbs: 0 g"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+    </LinearLayout>
+
+
+    <!-- 📋 Meals List -->
     <ListView
         android:id="@+id/mealListView"
         android:layout_width="match_parent"
@@ -23,6 +97,7 @@
         android:layout_weight="1"
         android:dividerHeight="1dp" />
 
+    <!-- ➕ Add Meal -->
     <Button
         android:id="@+id/addMealButton"
         android:layout_width="match_parent"
@@ -37,10 +112,13 @@
         android:layout_marginTop="12dp" />
 
 
+    <!-- 🔒 Logout -->
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Logout"
         android:layout_marginTop="12dp" />
+
 </LinearLayout>
+
