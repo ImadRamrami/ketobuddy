@@ -1,4 +1,4 @@
-package com.example.ketobuddy;
+package com.example.ketobuddy.api;
 
 import java.util.List;
 

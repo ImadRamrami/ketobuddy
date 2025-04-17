@@ -1,4 +1,4 @@
-package com.example.ketobuddy;
+package com.example.ketobuddy.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.ketobuddy.api.USDAFoodResponse;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.ketobuddy;
+package com.example.ketobuddy.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -8,8 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.content.SharedPreferences;
 
-import com.example.ketobuddy.HomeActivity;
-import com.example.ketobuddy.RegisterActivity;
+import com.example.ketobuddy.R;
 
 public class LoginActivity extends AppCompatActivity {
 

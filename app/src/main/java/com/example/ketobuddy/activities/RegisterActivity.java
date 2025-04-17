@@ -1,4 +1,4 @@
-package com.example.ketobuddy;  // <-- Keep your real package here
+package com.example.ketobuddy.activities;  // <-- Keep your real package here
 //can register twice w same info
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.content.SharedPreferences;
+
+import com.example.ketobuddy.R;
 
 public class RegisterActivity extends AppCompatActivity {
 

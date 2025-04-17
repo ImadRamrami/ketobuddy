@@ -18,13 +18,13 @@
             android:name=".FavoritesActivity"
             android:exported="false" />
         <activity
-            android:name=".SearchFoodActivity"
+            android:name=".activities.SearchFoodActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".activities.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

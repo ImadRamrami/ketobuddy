@@ -1,4 +1,4 @@
-package com.example.ketobuddy;
+package com.example.ketobuddy.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.ketobuddy.R;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.ketobuddy;
+package com.example.ketobuddy.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.ketobuddy.adapters.FoodAdapter;
+import com.example.ketobuddy.api.FoodApiService;
+import com.example.ketobuddy.R;
+import com.example.ketobuddy.api.RetrofitClient;
+import com.example.ketobuddy.api.USDAFoodResponse;
 
 import java.util.List;
 

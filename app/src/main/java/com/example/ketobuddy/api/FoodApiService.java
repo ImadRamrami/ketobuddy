@@ -1,4 +1,4 @@
-package com.example.ketobuddy;
+package com.example.ketobuddy.api;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
