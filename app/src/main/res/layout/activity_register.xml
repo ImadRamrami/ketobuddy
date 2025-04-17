@@ -9,6 +9,14 @@
     android:background="#FFFFFF">
 
     <EditText
+        android:id="@+id/registerNameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
         android:id="@+id/registerEmailInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
