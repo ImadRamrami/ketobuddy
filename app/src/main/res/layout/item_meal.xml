@@ -6,18 +6,18 @@
     android:padding="12dp">
 
     <TextView
-        android:id="@+id/foodNameText"
+        android:id="@+id/foodName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Food Name"
-        android:textStyle="bold"
-        android:textSize="16sp" />
+        android:text="Food name"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/foodMacroText"
+        android:id="@+id/macros"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Per 100g: 0 kcal | P: 0g | F: 0g | C: 0g"
+        android:text="Kcal: 0 | P: 0g | F: 0g | C: 0g"
         android:textSize="14sp"
         android:textColor="#555" />
 </LinearLayout>
