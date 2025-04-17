@@ -82,14 +82,10 @@ public class HomeActivity extends AppCompatActivity {
             startActivityForResult(intent, REQUEST_CODE_ADD_MEAL);
         });
 
-        Button logoutButton = findViewById(R.id.logoutButton);
-        logoutButton.setOnClickListener(v -> {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.apply();
-
-            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        // ✅ New Profile button logic
+        Button profileButton = findViewById(R.id.profileButton);
+        profileButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
     }
@@ -148,7 +144,6 @@ public class HomeActivity extends AppCompatActivity {
                             float newQuantity = Float.parseFloat(inputText);
                             meal.setQuantity(newQuantity);
 
-                            // Save back and update list
                             List<MealItem> meals = mealsByDate.getOrDefault(currentDateKey, new ArrayList<>());
                             meals.set(position, meal);
                             mealsByDate.put(currentDateKey, meals);
