@@ -1,4 +1,5 @@
 package com.example.ketobuddy.activities;
+import com.example.ketobuddy.utils.ThemeHelper;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;

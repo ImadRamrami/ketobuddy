@@ -1,4 +1,5 @@
 package com.example.ketobuddy.activities;
+import com.example.ketobuddy.utils.ThemeHelper;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SearchFoodActivity extends AppCompatActivity {
+
 
     private static final String API_KEY = "aifPgBqC4sC2rThadfW055IRt9zOSw2OvGGym1pb";
 

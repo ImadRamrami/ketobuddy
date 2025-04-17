@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:background="?android:colorBackground">
+
+        <!-- Profile image -->
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="start"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="4dp"
+            android:src="@android:drawable/ic_menu_myplaces"
+            android:background="@drawable/circle_bg"
+            android:padding="2dp"
+            android:scaleType="centerCrop"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="Profile Image" />
+
+        <!-- Name & Email -->
+        <EditText
+            android:id="@+id/editNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name"
+            android:textColorHint="?android:textColorHint"
+            android:textColor="?android:textColorPrimary"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/editEmailInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textColorHint="?android:textColorHint"
+            android:textColor="?android:textColorPrimary"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Weight & Target -->
+        <EditText
+            android:id="@+id/weightInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Current Weight"
+            android:inputType="numberDecimal"
+            android:textColorHint="?android:textColorHint"
+            android:textColor="?android:textColorPrimary"
+            android:layout_marginBottom="12dp" />
+
+        <EditText
+            android:id="@+id/targetGoalInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Target Weight"
+            android:inputType="numberDecimal"
+            android:textColorHint="?android:textColorHint"
+            android:textColor="?android:textColorPrimary"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Spinners -->
+        <Spinner
+            android:id="@+id/goalSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
+
+        <Spinner
+            android:id="@+id/sexSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
+
+        <Spinner
+            android:id="@+id/unitSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Date of Birth -->
+        <EditText
+            android:id="@+id/dobInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Date of Birth"
+            android:focusable="false"
+            android:clickable="true"
+            android:textColorHint="?android:textColorHint"
+            android:textColor="?android:textColorPrimary"
+            android:layout_marginBottom="16dp" />
+
+
+        <!-- Save & Logout Buttons -->
+        <Button
+            android:id="@+id/saveProfileButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Changes"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="?android:textColorPrimary" />
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="?android:textColorPrimary" />
+
+    </LinearLayout>
+</ScrollView>
