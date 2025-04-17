@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">KetoBuddy</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string-array name="goal_options">
+        <item>Lose Weight</item>
+        <item>Gain Muscle</item>
+        <item>Maintain</item>
+    </string-array>
+
+    <string-array name="sex_options">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="unit_options">
+        <item>Metric (kg)</item>
+        <item>Imperial (lbs)</item>
+    </string-array>
 </resources>
