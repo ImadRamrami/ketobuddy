@@ -14,18 +14,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KetoBuddy"
         tools:targetApi="31">
-
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:exported="false"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/Theme.KetoBuddy" />
         <!-- LauncherActivity decides where to go -->
         <activity
             android:name=".activities.LauncherActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Main app screens -->
+        </activity> <!-- Main app screens -->
         <activity
             android:name=".activities.LoginActivity"
             android:exported="false" />
@@ -41,7 +44,6 @@
         <activity
             android:name=".FavoritesActivity"
             android:exported="false" />
-
     </application>
 
 </manifest>

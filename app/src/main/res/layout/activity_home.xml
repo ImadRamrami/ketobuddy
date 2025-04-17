@@ -29,6 +29,13 @@
         android:layout_height="wrap_content"
         android:text="Add Meal"
         android:layout_marginTop="16dp" />
+    <Button
+        android:id="@+id/profileButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        android:layout_marginTop="12dp" />
+
 
     <Button
         android:id="@+id/logoutButton"

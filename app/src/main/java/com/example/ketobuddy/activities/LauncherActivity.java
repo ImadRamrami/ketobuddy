@@ -1,4 +1,6 @@
 package com.example.ketobuddy.activities;
+import com.example.ketobuddy.utils.ThemeHelper;
+
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,12 +14,8 @@ public class LauncherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Check if user is already logged in
         SharedPreferences preferences = getSharedPreferences("KetoBuddyPrefs", MODE_PRIVATE);
-        String savedEmail = preferences.getString("email", null);
-        String savedPassword = preferences.getString("password", null);
-
-        boolean isLoggedIn = (savedEmail != null && savedPassword != null);
+        boolean isLoggedIn = preferences.getBoolean("isLoggedIn", false);
 
         Intent intent;
         if (isLoggedIn) {
@@ -27,6 +25,6 @@ public class LauncherActivity extends AppCompatActivity {
         }
 
         startActivity(intent);
-        finish(); // Close this activity so user can't go "back" to it
+        finish();
     }
 }
