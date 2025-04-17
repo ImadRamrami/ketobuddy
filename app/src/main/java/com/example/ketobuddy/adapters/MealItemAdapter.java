@@ -33,12 +33,17 @@ public class MealItemAdapter extends ArrayAdapter<MealItem> {
         TextView nameText = convertView.findViewById(R.id.foodName);
         TextView macrosText = convertView.findViewById(R.id.macros);
 
-        nameText.setText(meal.name);
-        macrosText.setText(String.format("Kcal: %.0f | P: %.1fg | F: %.1fg | C: %.1fg",
-                meal.calories, meal.protein, meal.fat, meal.carbs));
+        // Show food name + quantity (e.g. "Avocado (150g)")
+        String cleanName = meal.name.replaceAll("\\(\\s*\\d+(\\.\\d+)?g\\s*\\)", "").trim();
+        nameText.setText(String.format("%s (%.0fg)", cleanName, meal.getQuantity()));
+
+        // Show dynamic macros for current quantity
+        macrosText.setText(String.format(
+                "Kcal: %.0f | P: %.1fg | F: %.1fg | C: %.1fg",
+                meal.getCalories(), meal.getProtein(), meal.getFat(), meal.getCarbs()
+        ));
 
         return convertView;
     }
 }
-
 

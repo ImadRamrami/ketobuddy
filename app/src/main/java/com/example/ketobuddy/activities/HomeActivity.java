@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class HomeActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_ADD_MEAL = 100;
@@ -72,7 +71,6 @@ public class HomeActivity extends AppCompatActivity {
 
         currentDateKey = getDateKey(new Date());
         updateDateLabel();
-
         setupMealListView();
 
         prevDayButton.setOnClickListener(v -> changeDateBy(-1));
@@ -146,18 +144,23 @@ public class HomeActivity extends AppCompatActivity {
                 .setPositiveButton("Update", (dialog, which) -> {
                     String inputText = input.getText().toString().trim();
                     if (!inputText.isEmpty()) {
-                        float newQuantity = Float.parseFloat(inputText);
-                        float factor = newQuantity / meal.getQuantity();
+                        try {
+                            float newQuantity = Float.parseFloat(inputText);
+                            meal.setQuantity(newQuantity);
 
-                        meal.calories *= factor;
-                        meal.protein *= factor;
-                        meal.fat *= factor;
-                        meal.carbs *= factor;
-                        meal.setQuantity(newQuantity);
+                            // Save back and update list
+                            List<MealItem> meals = mealsByDate.getOrDefault(currentDateKey, new ArrayList<>());
+                            meals.set(position, meal);
+                            mealsByDate.put(currentDateKey, meals);
 
-                        mealAdapter.notifyDataSetChanged();
-                        saveMealsToPrefs();
-                        updateNutrientTotals();
+                            mealAdapter.clear();
+                            mealAdapter.addAll(meals);
+                            mealAdapter.notifyDataSetChanged();
+                            saveMealsToPrefs();
+                            updateNutrientTotals();
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -238,10 +241,10 @@ public class HomeActivity extends AppCompatActivity {
         float totalCalories = 0, totalProtein = 0, totalFat = 0, totalCarbs = 0;
 
         for (MealItem meal : currentMeals) {
-            totalCalories += meal.calories;
-            totalProtein += meal.protein;
-            totalFat += meal.fat;
-            totalCarbs += meal.carbs;
+            totalCalories += meal.getCalories();
+            totalProtein += meal.getProtein();
+            totalFat += meal.getFat();
+            totalCarbs += meal.getCarbs();
         }
 
         totalCaloriesText.setText(String.format("Calories: %.0f kcal", totalCalories));
@@ -269,3 +272,4 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 }
+
