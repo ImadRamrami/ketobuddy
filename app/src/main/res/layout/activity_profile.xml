@@ -26,7 +26,11 @@
             android:focusable="true"
             android:contentDescription="Profile Image" />
 
-        <!-- Name & Email -->
+        <!-- Name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name" />
         <EditText
             android:id="@+id/editNameInput"
             android:layout_width="match_parent"
@@ -36,6 +40,11 @@
             android:textColor="?android:textColorPrimary"
             android:layout_marginBottom="12dp" />
 
+        <!-- Email -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email" />
         <EditText
             android:id="@+id/editEmailInput"
             android:layout_width="match_parent"
@@ -46,7 +55,11 @@
             android:textColor="?android:textColorPrimary"
             android:layout_marginBottom="12dp" />
 
-        <!-- Weight & Target -->
+        <!-- Current Weight -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current Weight" />
         <EditText
             android:id="@+id/weightInput"
             android:layout_width="match_parent"
@@ -57,6 +70,11 @@
             android:textColor="?android:textColorPrimary"
             android:layout_marginBottom="12dp" />
 
+        <!-- Target Weight -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Target Weight" />
         <EditText
             android:id="@+id/targetGoalInput"
             android:layout_width="match_parent"
@@ -66,6 +84,35 @@
             android:textColorHint="?android:textColorHint"
             android:textColor="?android:textColorPrimary"
             android:layout_marginBottom="12dp" />
+
+        <!-- Weeks to reach target -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Weeks to reach target weight" />
+
+        <EditText
+            android:id="@+id/weeksInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="e.g. 8"
+            android:inputType="number"
+            android:layout_marginBottom="12dp"
+            android:textColorHint="?android:textColorHint"
+            android:textColor="?android:textColorPrimary" />
+
+        <!-- Activity Level -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activity Level" />
+
+        <Spinner
+            android:id="@+id/activitySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
+
 
         <!-- Spinners -->
         <Spinner
@@ -87,6 +134,10 @@
             android:layout_marginBottom="12dp" />
 
         <!-- Date of Birth -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date of Birth" />
         <EditText
             android:id="@+id/dobInput"
             android:layout_width="match_parent"
@@ -97,7 +148,6 @@
             android:textColorHint="?android:textColorHint"
             android:textColor="?android:textColorPrimary"
             android:layout_marginBottom="16dp" />
-
 
         <!-- Save & Logout Buttons -->
         <Button
