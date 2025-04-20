@@ -11,7 +11,6 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ketobuddy.R;
-import com.example.ketobuddy.utils.ThemeHelper;
 
 import java.util.Calendar;
 
@@ -19,8 +18,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
-    EditText nameInput, emailInput, weightInput, targetGoalInput, dobInput;
-    Spinner sexSpinner, goalSpinner, unitSpinner;
+    EditText nameInput, emailInput, weightInput, targetGoalInput, dobInput, weeksInput;
+    Spinner sexSpinner, goalSpinner, unitSpinner, activitySpinner;
     ImageView profileImage;
     Button saveButton, logoutButton;
     Uri selectedImageUri = null;
@@ -39,10 +38,12 @@ public class ProfileActivity extends AppCompatActivity {
         weightInput = findViewById(R.id.weightInput);
         targetGoalInput = findViewById(R.id.targetGoalInput);
         dobInput = findViewById(R.id.dobInput);
+        weeksInput = findViewById(R.id.weeksInput); // 🔥 New
 
         sexSpinner = findViewById(R.id.sexSpinner);
         goalSpinner = findViewById(R.id.goalSpinner);
         unitSpinner = findViewById(R.id.unitSpinner);
+        activitySpinner = findViewById(R.id.activitySpinner); // 🔥 New
 
         profileImage = findViewById(R.id.profileImage);
         saveButton = findViewById(R.id.saveProfileButton);
@@ -51,16 +52,18 @@ public class ProfileActivity extends AppCompatActivity {
         preferences = getSharedPreferences("KetoBuddyPrefs", MODE_PRIVATE);
         editor = preferences.edit();
 
-        // Load data
+        // Load existing values
         nameInput.setText(preferences.getString("name", ""));
         emailInput.setText(preferences.getString("email", ""));
         weightInput.setText(preferences.getString("weight", ""));
         targetGoalInput.setText(preferences.getString("targetGoal", ""));
         dobInput.setText(preferences.getString("dob", ""));
+        weeksInput.setText(preferences.getString("weeksToGoal", ""));
 
         loadSpinner(sexSpinner, R.array.sex_options, preferences.getString("sex", ""));
         loadSpinner(goalSpinner, R.array.goal_options, preferences.getString("goal", ""));
         loadSpinner(unitSpinner, R.array.unit_options, preferences.getString("units", ""));
+        loadSpinner(activitySpinner, R.array.activity_levels, preferences.getString("activity", ""));
 
         // Load saved image
         String imageUri = preferences.getString("profileImageUri", null);
@@ -86,16 +89,18 @@ public class ProfileActivity extends AppCompatActivity {
             }, y, m, d).show();
         });
 
-        // Save changes
+        // Save Profile
         saveButton.setOnClickListener(v -> {
             editor.putString("name", nameInput.getText().toString().trim());
             editor.putString("email", emailInput.getText().toString().trim());
             editor.putString("weight", weightInput.getText().toString().trim());
             editor.putString("targetGoal", targetGoalInput.getText().toString().trim());
             editor.putString("dob", dobInput.getText().toString().trim());
+            editor.putString("weeksToGoal", weeksInput.getText().toString().trim());
             editor.putString("sex", sexSpinner.getSelectedItem().toString());
             editor.putString("goal", goalSpinner.getSelectedItem().toString());
             editor.putString("units", unitSpinner.getSelectedItem().toString());
+            editor.putString("activity", activitySpinner.getSelectedItem().toString());
             if (selectedImageUri != null) {
                 editor.putString("profileImageUri", selectedImageUri.toString());
             }
@@ -107,7 +112,8 @@ public class ProfileActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(v -> {
             editor.putBoolean("isLoggedIn", false);
             editor.apply();
-            startActivity(new Intent(this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            startActivity(new Intent(this, LoginActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
         });
     }
 
@@ -132,15 +138,3 @@ public class ProfileActivity extends AppCompatActivity {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-}

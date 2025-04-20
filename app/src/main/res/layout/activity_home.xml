@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -8,111 +9,156 @@
     android:gravity="center_horizontal"
     android:background="#FFFFFF">
 
-    <TextView
-        android:id="@+id/welcomeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome!"
-        android:textSize="18sp"
-        android:layout_marginBottom="24dp" />
+    <!-- 👋 Welcome message -->
+<TextView
+android:id="@+id/welcomeText"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Welcome!"
+android:textSize="18sp"
+android:layout_marginBottom="24dp" />
 
-    <!-- 🗓️ Date Navigation Row -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="12dp">
+    <!-- 🗓️ Date selector -->
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:gravity="center"
+android:layout_marginBottom="12dp">
 
-        <Button
-            android:id="@+id/prevDayButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="←"
-            android:textSize="20sp" />
+<Button
+    android:id="@+id/prevDayButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="←"
+    android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/dateText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Today"
-            android:textSize="16sp"
-            android:layout_marginHorizontal="16dp" />
+<TextView
+    android:id="@+id/dateText"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Today"
+    android:textSize="16sp"
+    android:layout_marginHorizontal="16dp" />
 
-        <Button
-            android:id="@+id/nextDayButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="→"
-            android:textSize="20sp" />
-    </LinearLayout>
+<Button
+    android:id="@+id/nextDayButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="→"
+    android:textSize="20sp" />
+</LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/nutrientTotalsSection"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="12dp"
-        android:layout_marginTop="12dp">
+    <!-- 🔥 Calorie label + value -->
+<LinearLayout
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:layout_marginBottom="4dp">
 
-        <TextView
-            android:id="@+id/totalCalories"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Calories: 0 kcal"
-            android:textSize="14sp"
-            android:layout_marginBottom="4dp" />
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Calories:"
+    android:textStyle="bold"
+    android:textSize="16sp"
+    android:layout_marginEnd="6dp" />
 
-        <TextView
-            android:id="@+id/totalProtein"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Protein: 0 g"
-            android:textSize="14sp"
-            android:layout_marginBottom="4dp" />
+<TextView
+    android:id="@+id/calorieProgressText"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="0 / 0 kcal"
+    android:textSize="16sp" />
+</LinearLayout>
 
-        <TextView
-            android:id="@+id/totalFat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Fat: 0 g"
-            android:textSize="14sp"
-            android:layout_marginBottom="4dp" />
+<ProgressBar
+android:id="@+id/calorieProgressBar"
+style="?android:attr/progressBarStyleHorizontal"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginBottom="16dp"
+android:progress="0"
+android:max="100"
+android:indeterminate="false" />
 
-        <TextView
-            android:id="@+id/totalCarbs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Carbs: 0 g"
-            android:textSize="14sp"
-            android:layout_marginBottom="4dp" />
-    </LinearLayout>
+    <!-- 🧁 Macro Wheels Section -->
+<LinearLayout
+android:id="@+id/macroWheelLayout"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+    android:gravity="center"
+    android:weightSum="3"
+android:layout_marginTop="12dp"
+android:layout_marginBottom="24dp">
 
+<!-- Protein -->
+<com.github.lzyzsd.circleprogress.DonutProgress
+    android:id="@+id/proteinCircle"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    app:donut_progress="0"
+    app:donut_max="100"
+    app:donut_text="0g"
+    app:donut_finished_color="#4CAF50"
+    app:donut_unfinished_color="#E0E0E0"
+    app:donut_text_color="#000000"
+    app:donut_inner_bottom_text="Protein"
+    app:donut_inner_bottom_text_size="12sp" />
+
+<!-- Carbs -->
+<com.github.lzyzsd.circleprogress.DonutProgress
+    android:id="@+id/carbsCircle"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    app:donut_progress="0"
+    app:donut_max="100"
+    app:donut_text="0g"
+    app:donut_finished_color="#FFA000"
+    app:donut_unfinished_color="#E0E0E0"
+    app:donut_text_color="#000000"
+    app:donut_inner_bottom_text="Carbs"
+    app:donut_inner_bottom_text_size="12sp" />
+
+<!-- Fat -->
+<com.github.lzyzsd.circleprogress.DonutProgress
+    android:id="@+id/fatCircle"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    app:donut_progress="0"
+    app:donut_max="100"
+    app:donut_text="0g"
+    app:donut_finished_color="#9C27B0"
+    app:donut_unfinished_color="#E0E0E0"
+    app:donut_text_color="#000000"
+    app:donut_inner_bottom_text="Fat"
+    app:donut_inner_bottom_text_size="12sp" />
+</LinearLayout>
 
     <!-- 📋 Meals List -->
-    <ListView
-        android:id="@+id/mealListView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:dividerHeight="1dp" />
+<ListView
+android:id="@+id/mealListView"
+android:layout_width="match_parent"
+android:layout_height="0dp"
+android:layout_weight="1"
+android:dividerHeight="1dp" />
 
-    <!-- ➕ Add Meal -->
-    <Button
-        android:id="@+id/addMealButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Meal"
-        android:layout_marginTop="16dp" />
-    <Button
-        android:id="@+id/profileButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Profile"
-        android:layout_marginTop="12dp" />
+    <!-- ➕ Add + Profile Buttons -->
+<Button
+android:id="@+id/addMealButton"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Add Meal"
+android:layout_marginTop="16dp" />
+
+<Button
+android:id="@+id/profileButton"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Profile"
+android:layout_marginTop="12dp" />
+    </LinearLayout>
 
 
-
-
-</LinearLayout>
 

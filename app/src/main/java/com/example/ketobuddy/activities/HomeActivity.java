@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.app.AlertDialog;
 
@@ -15,17 +16,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.ketobuddy.R;
 import com.example.ketobuddy.model.MealItem;
 import com.example.ketobuddy.adapters.MealItemAdapter;
+import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -37,13 +33,11 @@ public class HomeActivity extends AppCompatActivity {
     private MealItemAdapter mealAdapter;
     private String currentDateKey;
 
-    private TextView dateText;
+    private TextView dateText, calorieProgressText;
     private ListView mealListView;
 
-    private TextView totalCaloriesText;
-    private TextView totalProteinText;
-    private TextView totalFatText;
-    private TextView totalCarbsText;
+    private ProgressBar calorieProgressBar;
+    private DonutProgress proteinCircle, carbsCircle, fatCircle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +53,12 @@ public class HomeActivity extends AppCompatActivity {
         dateText = findViewById(R.id.dateText);
         mealListView = findViewById(R.id.mealListView);
 
-        totalCaloriesText = findViewById(R.id.totalCalories);
-        totalProteinText = findViewById(R.id.totalProtein);
-        totalFatText = findViewById(R.id.totalFat);
-        totalCarbsText = findViewById(R.id.totalCarbs);
+        calorieProgressText = findViewById(R.id.calorieProgressText);
+        calorieProgressBar = findViewById(R.id.calorieProgressBar);
+
+        proteinCircle = findViewById(R.id.proteinCircle);
+        carbsCircle = findViewById(R.id.carbsCircle);
+        fatCircle = findViewById(R.id.fatCircle);
 
         Button prevDayButton = findViewById(R.id.prevDayButton);
         Button nextDayButton = findViewById(R.id.nextDayButton);
@@ -76,18 +72,13 @@ public class HomeActivity extends AppCompatActivity {
         prevDayButton.setOnClickListener(v -> changeDateBy(-1));
         nextDayButton.setOnClickListener(v -> changeDateBy(1));
 
-        Button addMealButton = findViewById(R.id.addMealButton);
-        addMealButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, SearchFoodActivity.class);
-            startActivityForResult(intent, REQUEST_CODE_ADD_MEAL);
-        });
+        findViewById(R.id.addMealButton).setOnClickListener(v ->
+                startActivityForResult(new Intent(this, SearchFoodActivity.class), REQUEST_CODE_ADD_MEAL)
+        );
 
-        // ✅ New Profile button logic
-        Button profileButton = findViewById(R.id.profileButton);
-        profileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
-            startActivity(intent);
-        });
+        findViewById(R.id.profileButton).setOnClickListener(v ->
+                startActivity(new Intent(this, ProfileActivity.class))
+        );
     }
 
     private void setupMealListView() {
@@ -103,29 +94,68 @@ public class HomeActivity extends AppCompatActivity {
         mealAdapter.notifyDataSetChanged();
 
         updateNutrientTotals();
+    }
 
-        mealListView.setOnItemLongClickListener((parent, view, position, id) -> {
-            MealItem meal = mealAdapter.getItem(position);
+    private void updateNutrientTotals() {
+        List<MealItem> currentMeals = mealsByDate.getOrDefault(currentDateKey, new ArrayList<>());
 
-            new AlertDialog.Builder(this)
-                    .setTitle("Edit or Delete")
-                    .setMessage("What would you like to do with \"" + meal.name + "\"?")
-                    .setPositiveButton("Edit Quantity", (dialog, which) -> {
-                        showEditMealDialog(position, meal);
-                    })
-                    .setNegativeButton("Delete", (dialog, which) -> {
-                        currentMeals.remove(position);
-                        mealAdapter.clear();
-                        mealAdapter.addAll(currentMeals);
-                        mealAdapter.notifyDataSetChanged();
-                        mealsByDate.put(currentDateKey, currentMeals);
-                        saveMealsToPrefs();
-                        updateNutrientTotals();
-                    })
-                    .setNeutralButton("Cancel", null)
-                    .show();
-            return true;
-        });
+        float totalCalories = 0, totalProtein = 0, totalFat = 0, totalCarbs = 0;
+
+        for (MealItem meal : currentMeals) {
+            totalCalories += meal.getCalories();
+            totalProtein += meal.getProtein();
+            totalFat += meal.getFat();
+            totalCarbs += meal.getCarbs();
+        }
+
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        float currentWeight = parseFloatSafe(prefs.getString("weight", "0"));
+        float targetWeight = parseFloatSafe(prefs.getString("targetGoal", "0"));
+        float weeks = parseFloatSafe(prefs.getString("weeksToGoal", "1"));
+        String sex = prefs.getString("sex", "Male");
+        String activity = prefs.getString("activity", "Moderately active (3–5 days/week)");
+
+        float baseCalories = currentWeight * 22;
+        float activityFactor = getActivityMultiplier(activity);
+        float tdee = baseCalories * activityFactor;
+
+        float deltaKg = targetWeight - currentWeight;
+        float kcalChange = (deltaKg * 7700f) / (weeks * 7f);
+        float dailyGoal = tdee + kcalChange;
+
+        float proteinGoal = currentWeight * 1.9f;
+        float carbGoal = (dailyGoal * 0.2f) / 4f;
+        float fatGoal = (dailyGoal - (proteinGoal * 4f + carbGoal * 4f)) / 9f;
+
+        float calPercent = (dailyGoal > 0) ? (totalCalories / dailyGoal) * 100f : 0f;
+        calorieProgressBar.setProgress((int) Math.min(calPercent, 100));
+        calorieProgressText.setText(String.format(Locale.getDefault(), "%.0f / %.0f kcal (%.0f%%)", totalCalories, dailyGoal, calPercent));
+
+        float pPercent = (proteinGoal > 0) ? (totalProtein / proteinGoal) * 100f : 0f;
+        float cPercent = (carbGoal > 0) ? (totalCarbs / carbGoal) * 100f : 0f;
+        float fPercent = (fatGoal > 0) ? (totalFat / fatGoal) * 100f : 0f;
+
+        proteinCircle.setProgress(Math.min(pPercent, 100));
+        proteinCircle.setText(String.format(Locale.getDefault(), "%.0fg", totalProtein));
+
+        carbsCircle.setProgress(Math.min(cPercent, 100));
+        carbsCircle.setText(String.format(Locale.getDefault(), "%.0fg", totalCarbs));
+
+        fatCircle.setProgress(Math.min(fPercent, 100));
+        fatCircle.setText(String.format(Locale.getDefault(), "%.0fg", totalFat));
+    }
+
+    private float parseFloatSafe(String input) {
+        try { return Float.parseFloat(input); } catch (Exception e) { return 0f; }
+    }
+
+    private float getActivityMultiplier(String level) {
+        if (level.contains("Sedentary")) return 1.2f;
+        if (level.contains("Lightly")) return 1.375f;
+        if (level.contains("Moderately")) return 1.55f;
+        if (level.contains("Very active")) return 1.725f;
+        if (level.contains("Super active")) return 1.9f;
+        return 1.2f;
     }
 
     private void showEditMealDialog(int position, MealItem meal) {
@@ -138,24 +168,21 @@ public class HomeActivity extends AppCompatActivity {
                 .setTitle("Update quantity for " + meal.name)
                 .setView(input)
                 .setPositiveButton("Update", (dialog, which) -> {
-                    String inputText = input.getText().toString().trim();
-                    if (!inputText.isEmpty()) {
-                        try {
-                            float newQuantity = Float.parseFloat(inputText);
-                            meal.setQuantity(newQuantity);
+                    try {
+                        float newQuantity = Float.parseFloat(input.getText().toString().trim());
+                        meal.setQuantity(newQuantity);
 
-                            List<MealItem> meals = mealsByDate.getOrDefault(currentDateKey, new ArrayList<>());
-                            meals.set(position, meal);
-                            mealsByDate.put(currentDateKey, meals);
+                        List<MealItem> meals = mealsByDate.getOrDefault(currentDateKey, new ArrayList<>());
+                        meals.set(position, meal);
+                        mealsByDate.put(currentDateKey, meals);
 
-                            mealAdapter.clear();
-                            mealAdapter.addAll(meals);
-                            mealAdapter.notifyDataSetChanged();
-                            saveMealsToPrefs();
-                            updateNutrientTotals();
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
-                        }
+                        mealAdapter.clear();
+                        mealAdapter.addAll(meals);
+                        mealAdapter.notifyDataSetChanged();
+                        saveMealsToPrefs();
+                        updateNutrientTotals();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -179,30 +206,24 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void updateDateLabel() {
-        String label;
         String todayKey = getDateKey(new Date());
-        if (currentDateKey.equals(todayKey)) {
-            label = "Today (" + formatDisplayDate(currentDateKey) + ")";
-        } else {
-            label = formatDisplayDate(currentDateKey);
-        }
+        String label = currentDateKey.equals(todayKey)
+                ? "Today (" + formatDisplayDate(currentDateKey) + ")"
+                : formatDisplayDate(currentDateKey);
         dateText.setText(label);
     }
 
     private String formatDisplayDate(String dateKey) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            Date date = sdf.parse(dateKey);
-            SimpleDateFormat output = new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault());
-            return output.format(date);
+            Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(dateKey);
+            return new SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(date);
         } catch (Exception e) {
             return dateKey;
         }
     }
 
     private String getDateKey(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        return sdf.format(date);
+        return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
     }
 
     @Override
@@ -230,40 +251,18 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void updateNutrientTotals() {
-        List<MealItem> currentMeals = mealsByDate.getOrDefault(currentDateKey, new ArrayList<>());
-
-        float totalCalories = 0, totalProtein = 0, totalFat = 0, totalCarbs = 0;
-
-        for (MealItem meal : currentMeals) {
-            totalCalories += meal.getCalories();
-            totalProtein += meal.getProtein();
-            totalFat += meal.getFat();
-            totalCarbs += meal.getCarbs();
-        }
-
-        totalCaloriesText.setText(String.format("Calories: %.0f kcal", totalCalories));
-        totalProteinText.setText(String.format("Protein: %.1f g", totalProtein));
-        totalFatText.setText(String.format("Fat: %.1f g", totalFat));
-        totalCarbsText.setText(String.format("Carbs: %.1f g", totalCarbs));
-    }
-
     private void saveMealsToPrefs() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(mealsByDate);
-        editor.putString(MEAL_MAP_KEY, json);
-        editor.apply();
+        prefs.edit().putString(MEAL_MAP_KEY, new Gson().toJson(mealsByDate)).apply();
     }
 
     private void loadMealsFromPrefs() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String json = prefs.getString(MEAL_MAP_KEY, null);
         if (json != null) {
-            Gson gson = new Gson();
             java.lang.reflect.Type type = new TypeToken<Map<String, List<MealItem>>>() {}.getType();
-            mealsByDate = gson.fromJson(json, type);
+            mealsByDate = new Gson().fromJson(json, type);
         }
     }
 }
+
